@@ -1,0 +1,67 @@
+{
+  "name": "claude-sync",
+  "version": "0.1.0",
+  "description": "Sync your Claude Code .claude/ directory across all your devices. One brain, everywhere.",
+  "keywords": [
+    "claude",
+    "claude-code",
+    "sync",
+    "developer-tools",
+    "productivity",
+    "multi-device",
+    "dotfiles",
+    "memory",
+    "ai",
+    "vibecoding"
+  ],
+  "author": "claude-sync contributors",
+  "license": "MIT",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/claude-sync/claude-sync"
+  },
+  "homepage": "https://github.com/claude-sync/claude-sync#readme",
+  "bugs": {
+    "url": "https://github.com/claude-sync/claude-sync/issues"
+  },
+  "bin": {
+    "claude-sync": "./dist/bin/claude-sync.js"
+  },
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/bin/claude-sync.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint src/ bin/ tests/",
+    "prepublishOnly": "npm run build"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "commander": "^12.1.0",
+    "chalk": "^5.3.0",
+    "inquirer": "^9.3.0",
+    "chokidar": "^3.6.0",
+    "glob": "^10.4.0",
+    "fast-glob": "^3.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/inquirer": "^9.0.7",
+    "typescript": "^5.5.0",
+    "vitest": "^1.6.0",
+    "eslint": "^9.5.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0"
+  }
+}

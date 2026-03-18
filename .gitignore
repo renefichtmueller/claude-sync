@@ -1,0 +1,14 @@
+node_modules/
+dist/
+*.js.map
+*.d.ts.map
+.env
+.env.*
+.dev.vars
+*.local
+coverage/
+.vscode/
+.idea/
+*.tgz
+.DS_Store
+Thumbs.db
