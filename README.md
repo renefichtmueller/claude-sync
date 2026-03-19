@@ -2,6 +2,8 @@
 
 # claude-sync
 
+> **[🚀 Live Demo](https://claude-sync-demo.pages.dev)** — Try it in your browser, no installation needed.
+
 ### One Claude brain across all your devices
 
 **Switch machines, keep the context.** Your Claude Code memory, skills, and settings follow you everywhere.
