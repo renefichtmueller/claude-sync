@@ -345,6 +345,11 @@ See [docs/security.md](docs/security.md) for details.
 
 ---
 
+## Related Projects
+
+- **[claude-cortex](https://github.com/renefichtmueller/claude-cortex)** — Structured persistent memory for Claude Code. The knowledge that claude-sync distributes.
+- **[slop-radar](https://github.com/renefichtmueller/slop-radar)** — AI slop detection. 245 English + 127 German phrases. CLI + Claude Code skill.
+
 ## Contributing
 
 Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
