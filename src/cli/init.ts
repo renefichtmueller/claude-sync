@@ -11,6 +11,7 @@ import { detectEnvironment, suggestBackend } from '../core/detector.js';
 import { DeviceRegistry } from '../core/device-registry.js';
 import { Encryption } from '../core/encryption.js';
 import { GitBackend } from '../backends/git.js';
+import { GiteaBackend } from '../backends/gitea.js';
 import { CloudBackend } from '../backends/dropbox.js';
 import { SyncthingBackend } from '../backends/syncthing.js';
 import { RsyncBackend } from '../backends/rsync.js';
@@ -126,6 +127,11 @@ export async function initCommand(options: InitOptions): Promise<void> {
     }
 
     backendChoices.push({
+      name: `${chalk.cyan('Gitea')} ${chalk.dim('(self-hosted ★)')} — your own Git server, works on LAN/intranet`,
+      value: 'gitea',
+    });
+
+    backendChoices.push({
       name: `${chalk.dim('Custom command')} — bring your own sync`,
       value: 'custom',
     });
@@ -203,6 +209,54 @@ export async function initCommand(options: InitOptions): Promise<void> {
 
       backendConfig.cloudProvider = provider;
       backendConfig.cloudPath = cloudPath;
+      break;
+    }
+
+    case 'gitea': {
+      const giteaAnswers = await inquirer.prompt([
+        {
+          type: 'input',
+          name: 'giteaUrl',
+          message: 'Gitea URL (e.g. https://gitea.yourserver.org or http://192.168.1.10:3000):',
+          validate: (v: string) => v.startsWith('http') ? true : 'Must start with http:// or https://',
+        },
+        {
+          type: 'input',
+          name: 'giteaUser',
+          message: 'Gitea username:',
+          validate: (v: string) => v.length > 0 ? true : 'Required',
+        },
+        {
+          type: 'password',
+          name: 'giteaToken',
+          message: 'Gitea personal access token (Settings → Applications → Access Tokens):',
+          validate: (v: string) => v.length > 0 ? true : 'Required',
+        },
+        {
+          type: 'input',
+          name: 'giteaRepo',
+          message: 'Repository name to use:',
+          default: 'claude-memory',
+        },
+      ]);
+
+      backendConfig.giteaUrl   = giteaAnswers.giteaUrl;
+      backendConfig.giteaUser  = giteaAnswers.giteaUser;
+      backendConfig.giteaToken = giteaAnswers.giteaToken;
+      backendConfig.giteaRepo  = giteaAnswers.giteaRepo;
+      backendConfig.branch     = 'main';
+
+      // Test connection immediately
+      console.log(chalk.dim('  Verifying connection to Gitea...'));
+      const { GiteaBackend } = await import('../backends/gitea.js');
+      const testBackend = new GiteaBackend(backendConfig);
+      const check = await testBackend.validateConnection();
+      if (!check.ok) {
+        console.log(chalk.red(`  ✗ Cannot connect: ${check.error}`));
+        console.log(chalk.dim('  Check URL and token, then run claude-sync init again.'));
+        return;
+      }
+      console.log(chalk.green(`  ✓ Connected as @${check.user} — repo will be auto-created if needed`));
       break;
     }
 
@@ -399,6 +453,7 @@ export async function initCommand(options: InitOptions): Promise<void> {
 function createBackend(config: BackendConfig) {
   switch (config.type) {
     case 'git': return new GitBackend(config);
+    case 'gitea': return new GiteaBackend(config);
     case 'cloud': return new CloudBackend(config);
     case 'syncthing': return new SyncthingBackend(config);
     case 'rsync': return new RsyncBackend(config);
@@ -411,6 +466,8 @@ function formatBackend(config: BackendConfig): string {
   switch (config.type) {
     case 'git':
       return config.remoteUrl ? `git (${config.remoteUrl})` : 'git (local)';
+    case 'gitea':
+      return `gitea (${config.giteaUrl}/${config.giteaUser}/${config.giteaRepo ?? 'claude-memory'})`;
     case 'cloud':
       return `${config.cloudProvider} (${config.cloudPath})`;
     case 'syncthing':

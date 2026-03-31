@@ -36,9 +36,10 @@ export { SnapshotManager } from './core/snapshot.js';
 export { FileWatcher } from './core/watcher.js';
 
 export { GitBackend } from './backends/git.js';
+export { GiteaBackend } from './backends/gitea.js';
 export { CloudBackend } from './backends/dropbox.js';
 export { SyncthingBackend } from './backends/syncthing.js';
 export { RsyncBackend } from './backends/rsync.js';
 export { CustomBackend } from './backends/custom.js';
 
-export const VERSION = '0.1.0';
+export const VERSION = '0.2.0';

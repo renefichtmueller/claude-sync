@@ -4,7 +4,7 @@
 
 // ── Sync Backend Types ──────────────────────────────────────────────
 
-export type BackendType = 'git' | 'cloud' | 'syncthing' | 'rsync' | 'custom';
+export type BackendType = 'git' | 'gitea' | 'cloud' | 'syncthing' | 'rsync' | 'custom';
 
 export type CloudProvider = 'dropbox' | 'icloud' | 'onedrive';
 
@@ -32,6 +32,14 @@ export interface BackendConfig {
   pullCommand?: string;
   /** Custom-specific: status command */
   statusCommand?: string;
+  /** Gitea-specific: base URL (e.g. https://gitea.example.org) */
+  giteaUrl?: string;
+  /** Gitea-specific: personal access token */
+  giteaToken?: string;
+  /** Gitea-specific: username */
+  giteaUser?: string;
+  /** Gitea-specific: repository name (default: claude-memory) */
+  giteaRepo?: string;
 }
 
 // ── Sync Backend Interface ──────────────────────────────────────────
