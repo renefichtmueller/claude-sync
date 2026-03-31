@@ -10,18 +10,20 @@ body{background:#0d1117;color:#c9d1d9;font-family:system-ui,-apple-system,sans-s
 .header{text-align:center;padding:2rem 1rem;border-bottom:1px solid #21262d}
 .header h1{font-size:1.8rem;color:#3fb950}
 .header p{color:#8b949e;margin-top:.3rem}
+.badge{display:inline-block;background:#161b22;border:1px solid #30363d;border-radius:20px;padding:.2rem .8rem;font-size:.75rem;color:#8b949e;margin-top:.5rem}
+.badge span{color:#3fb950;font-weight:600}
 .container{max-width:1000px;margin:0 auto;padding:1.5rem 1rem}
 .section{margin-bottom:2.5rem}
 .section h2{font-size:1.2rem;color:#3fb950;margin-bottom:1rem;padding-bottom:.3rem;border-bottom:1px solid #21262d}
 
 /* Sync Animation */
 .sync-viz{display:flex;justify-content:center;align-items:center;gap:2rem;padding:2rem;flex-wrap:wrap}
-.device{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:1.2rem;text-align:center;width:140px;transition:border-color .4s}
+.device{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:1.2rem;text-align:center;width:140px;transition:border-color .4s,box-shadow .4s}
 .device.active{border-color:#3fb950;box-shadow:0 0 15px #3fb95033}
 .device-icon{font-size:2rem;margin-bottom:.3rem}
 .device-name{font-size:.85rem;font-weight:600;color:#c9d1d9}
 .device-status{font-size:.7rem;color:#8b949e;margin-top:.2rem}
-.sync-cloud{background:#161b22;border:2px solid #3fb950;border-radius:50%;width:100px;height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative}
+.sync-cloud{background:#161b22;border:2px solid #3fb950;border-radius:50%;width:100px;height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .sync-cloud-label{font-size:.7rem;color:#3fb950;font-weight:600}
 .sync-cloud-icon{font-size:1.5rem}
 .arrow{color:#3fb950;font-size:1.2rem;animation:pulse 2s infinite}
@@ -32,26 +34,44 @@ body{background:#0d1117;color:#c9d1d9;font-family:system-ui,-apple-system,sans-s
 /* Backend Table */
 .backend-table{width:100%;border-collapse:collapse;font-size:.85rem}
 .backend-table th{text-align:left;padding:.6rem;background:#161b22;border-bottom:1px solid #30363d;color:#3fb950;position:sticky;top:0}
-.backend-table td{padding:.6rem;border-bottom:1px solid #21262d;cursor:pointer}
+.backend-table td{padding:.6rem;border-bottom:1px solid #21262d;cursor:pointer;vertical-align:middle}
 .backend-table tr:hover td{background:#161b22}
 .backend-table tr.selected td{background:#3fb95011;border-color:#3fb95033}
 .backend-detail{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:1rem;margin-top:.8rem;display:none;font-size:.85rem}
 .backend-detail.open{display:block}
-.backend-detail code{background:#0d1117;padding:.2rem .4rem;border-radius:3px;font-size:.8rem;color:#3fb950}
+.backend-detail code{display:block;background:#0d1117;padding:.5rem .8rem;border-radius:6px;font-size:.78rem;color:#3fb950;margin-top:.5rem;overflow-x:auto;white-space:pre}
+.new-badge{display:inline-block;background:#1f6feb22;border:1px solid #1f6feb55;color:#58a6ff;font-size:.65rem;padding:.1rem .4rem;border-radius:4px;margin-left:.4rem;vertical-align:middle}
 
 /* Terminal Wizard */
 .terminal{background:#0d1117;border:1px solid #30363d;border-radius:8px;overflow:hidden}
 .terminal-bar{background:#161b22;padding:.4rem .8rem;display:flex;gap:.4rem;align-items:center}
 .terminal-dot{width:10px;height:10px;border-radius:50%}
-.terminal-body{padding:1rem;font-family:'SF Mono',Monaco,monospace;font-size:.8rem;min-height:200px}
+.terminal-body{padding:1rem;font-family:'SF Mono',Monaco,monospace;font-size:.8rem;min-height:220px}
 .term-line{margin:.2rem 0;white-space:pre}
 .term-prompt{color:#3fb950}
 .term-dim{color:#484f58}
 .term-cyan{color:#58a6ff}
 .term-green{color:#3fb950}
 .term-yellow{color:#d29922}
+.term-orange{color:#f0883e}
 .term-cursor{display:inline-block;width:8px;height:14px;background:#3fb950;animation:blink 1s step-end infinite;vertical-align:text-bottom}
 @keyframes blink{50%{opacity:0}}
+
+/* Gitea topology diagram */
+.gitea-topo{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:.5rem;align-items:center;padding:1.5rem;background:#161b22;border-radius:12px;border:1px solid #30363d}
+.topo-node{background:#0d1117;border:1px solid #30363d;border-radius:10px;padding:1rem;text-align:center;transition:border-color .4s,box-shadow .4s}
+.topo-node.active{border-color:#58a6ff;box-shadow:0 0 12px #58a6ff22}
+.topo-node.hub{border-color:#3fb950;background:#161b22}
+.topo-node .icon{font-size:1.5rem;margin-bottom:.3rem}
+.topo-node .label{font-size:.75rem;font-weight:600}
+.topo-node .sub{font-size:.65rem;color:#8b949e;margin-top:.2rem}
+.topo-arrow{text-align:center;color:#3fb950;font-size:.9rem;animation:pulse 2s infinite}
+.topo-arrow:nth-child(2){animation-delay:.4s}
+.topo-arrow:nth-child(4){animation-delay:.8s}
+.gitea-features{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-top:1rem}
+.gitea-feature{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:.8rem;font-size:.82rem}
+.gitea-feature .fi{font-size:1.2rem;margin-bottom:.3rem}
+.gitea-feature strong{color:#3fb950;display:block;margin-bottom:.2rem}
 
 /* Conflict Demo */
 .conflict-demo{display:grid;grid-template-columns:1fr auto 1fr;gap:1rem;align-items:start}
@@ -67,17 +87,24 @@ body{background:#0d1117;color:#c9d1d9;font-family:system-ui,-apple-system,sans-s
 .diff-ctx{color:#8b949e}
 .diff-merged{background:#3fb95011;border-left:2px solid #3fb950}
 
-.cta{text-align:center;margin-top:1rem}
+/* Terminal tabs */
+.term-tabs{display:flex;gap:.3rem;margin-bottom:1rem}
+.term-tab{padding:.4rem 1rem;background:#161b22;border:1px solid #30363d;border-radius:6px 6px 0 0;font-size:.8rem;cursor:pointer;color:#8b949e;transition:all .2s}
+.term-tab.active{background:#0d1117;border-bottom-color:#0d1117;color:#3fb950}
+
+.cta{text-align:center;margin-top:1rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
 .cta a{display:inline-block;padding:.8rem 2rem;background:#3fb950;color:#0d1117;border-radius:8px;font-weight:700;text-decoration:none;font-size:1rem}
+.cta a.secondary{background:transparent;border:1px solid #3fb950;color:#3fb950}
 .footer{text-align:center;padding:2rem;border-top:1px solid #21262d;margin-top:2rem;color:#8b949e;font-size:.85rem}
 .footer a{color:#58a6ff;text-decoration:none}
-@media(max-width:700px){.sync-viz{flex-direction:column}.conflict-demo{grid-template-columns:1fr}.conflict-arrow{transform:rotate(90deg)}.header h1{font-size:1.3rem}}
+@media(max-width:700px){.sync-viz{flex-direction:column}.conflict-demo{grid-template-columns:1fr}.conflict-arrow{transform:rotate(90deg)}.header h1{font-size:1.3rem}.gitea-topo{grid-template-columns:1fr;gap:1rem}.topo-arrow{transform:rotate(90deg)}.gitea-features{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="header">
 <h1>claude-sync</h1>
 <p>One Claude brain across all your devices &mdash; switch machines, keep the context</p>
+<div class="badge"><span>v0.2.0</span> &nbsp;·&nbsp; Git &nbsp;·&nbsp; <span>Gitea ★ New</span> &nbsp;·&nbsp; iCloud &nbsp;·&nbsp; Syncthing &nbsp;·&nbsp; rsync &nbsp;·&nbsp; Custom</div>
 </div>
 <div class="container">
 
@@ -90,7 +117,7 @@ body{background:#0d1117;color:#c9d1d9;font-family:system-ui,-apple-system,sans-s
 <div class="arrow" id="a1">&harr;</div>
 <div class="device" id="d1"><div class="device-icon">&#128187;</div><div class="device-name">Laptop</div><div class="device-status">Last sync: 1h ago</div></div>
 <div class="arrow" id="a2">&harr;</div>
-<div class="device" id="d2"><div class="device-icon">&#128241;</div><div class="device-name">Phone</div><div class="device-status">Last sync: 3h ago</div></div>
+<div class="device" id="d2"><div class="device-icon">&#127970;</div><div class="device-name">Home Server</div><div class="device-status">Last sync: 3h ago</div></div>
 </div>
 </div>
 
@@ -101,17 +128,40 @@ body{background:#0d1117;color:#c9d1d9;font-family:system-ui,-apple-system,sans-s
 <thead><tr><th>Backend</th><th>Privacy</th><th>Speed</th><th>Setup</th><th>Best For</th></tr></thead>
 <tbody>
 <tr onclick="showBackend(0)"><td style="color:#3fb950;font-weight:600">Git</td><td>Medium</td><td>Fast</td><td>Easy</td><td>Developers</td></tr>
-<tr onclick="showBackend(1)"><td style="color:#3fb950;font-weight:600">iCloud / Dropbox</td><td>Low</td><td>Auto</td><td>Easiest</td><td>Just works</td></tr>
-<tr onclick="showBackend(2)"><td style="color:#3fb950;font-weight:600">Syncthing</td><td>Maximum</td><td>Real-time</td><td>Medium</td><td>Privacy-focused</td></tr>
-<tr onclick="showBackend(3)"><td style="color:#3fb950;font-weight:600">rsync / SSH</td><td>Maximum</td><td>On-demand</td><td>Advanced</td><td>Server admins</td></tr>
-<tr onclick="showBackend(4)"><td style="color:#3fb950;font-weight:600">Custom</td><td>Varies</td><td>Varies</td><td>Flexible</td><td>Existing infra</td></tr>
+<tr onclick="showBackend(1)"><td style="color:#58a6ff;font-weight:600">Gitea <span class="new-badge">NEW</span></td><td>&#128274; Maximum</td><td>Fast</td><td>Easy</td><td>Self-hosters</td></tr>
+<tr onclick="showBackend(2)"><td style="color:#3fb950;font-weight:600">iCloud / Dropbox</td><td>Low</td><td>Auto</td><td>Easiest</td><td>Just works</td></tr>
+<tr onclick="showBackend(3)"><td style="color:#3fb950;font-weight:600">Syncthing</td><td>Maximum</td><td>Real-time</td><td>Medium</td><td>Privacy-focused</td></tr>
+<tr onclick="showBackend(4)"><td style="color:#3fb950;font-weight:600">rsync / SSH</td><td>Maximum</td><td>On-demand</td><td>Advanced</td><td>Server admins</td></tr>
+<tr onclick="showBackend(5)"><td style="color:#3fb950;font-weight:600">Custom</td><td>Varies</td><td>Varies</td><td>Flexible</td><td>Existing infra</td></tr>
 </tbody>
 </table>
 <div class="backend-detail" id="bd"></div>
 </div>
 
 <div class="section">
+<h2>&#127968; Gitea Backend — Your Own Sync Hub</h2>
+<p style="color:#8b949e;margin-bottom:1.2rem;font-size:.85rem">No GitHub. No cloud dependency. Runs on your home server, NAS, or VPS — accessible on LAN, VPN, or public domain.</p>
+<div class="gitea-topo">
+  <div class="topo-node" id="gd0"><div class="icon">&#128421;</div><div class="label">Mac Studio</div><div class="sub">claude-sync push</div></div>
+  <div class="topo-arrow">&harr;</div>
+  <div class="topo-node hub" id="ghub"><div class="icon">&#127968;</div><div class="label" style="color:#3fb950">Gitea Server</div><div class="sub">claude-memory repo</div></div>
+  <div class="topo-arrow">&harr;</div>
+  <div class="topo-node" id="gd1"><div class="icon">&#128187;</div><div class="label">MacBook</div><div class="sub">claude-sync pull</div></div>
+</div>
+<div class="gitea-features">
+  <div class="gitea-feature"><div class="fi">&#128295;</div><strong>Auto-creates repo</strong>If the sync repo doesn't exist, claude-sync creates it via Gitea API. Zero manual setup.</div>
+  <div class="gitea-feature"><div class="fi">&#128274;</div><strong>100% private</strong>Stays on your network. LAN, WireGuard VPN, or your own domain. No data leaves your infrastructure.</div>
+  <div class="gitea-feature"><div class="fi">&#128196;</div><strong>Full version history</strong>Every sync is a git commit. Browse, diff, and restore any state directly in the Gitea web UI.</div>
+  <div class="gitea-feature"><div class="fi">&#9889;</div><strong>Validates on init</strong>Connects to your Gitea API on setup, confirms auth, and reports your username before writing anything.</div>
+</div>
+</div>
+
+<div class="section">
 <h2>Init Wizard Preview</h2>
+<div class="term-tabs">
+  <div class="term-tab active" onclick="switchTab(0,this)">Standard (Git)</div>
+  <div class="term-tab" onclick="switchTab(1,this)">Gitea (Self-hosted)</div>
+</div>
 <div class="terminal">
 <div class="terminal-bar"><div class="terminal-dot" style="background:#f85149"></div><div class="terminal-dot" style="background:#d29922"></div><div class="terminal-dot" style="background:#3fb950"></div><span style="color:#8b949e;font-size:.75rem;margin-left:.5rem">Terminal</span></div>
 <div class="terminal-body" id="term"></div>
@@ -152,6 +202,7 @@ body{background:#0d1117;color:#c9d1d9;font-family:system-ui,-apple-system,sans-s
 
 <div class="cta">
 <a href="https://github.com/renefichtmueller/claude-sync">Get Started on GitHub</a>
+<a class="secondary" href="https://github.com/renefichtmueller/claude-sync/blob/main/docs/backends.md">Backend Docs</a>
 </div>
 </div>
 <div class="footer">
@@ -166,9 +217,19 @@ function animateSync(){
 }
 animateSync();setInterval(animateSync,2500);
 
+// Gitea topology animation
+let giteaActive=0;
+const giteaNodes=['gd0','ghub','gd1'];
+function animateGitea(){
+  giteaNodes.forEach((id,i)=>document.getElementById(id)?.classList.toggle('active',i===giteaActive));
+  giteaActive=(giteaActive+1)%giteaNodes.length;
+}
+animateGitea();setInterval(animateGitea,1800);
+
 // Backend details
 const backends=[
   {title:'Git (Recommended)',cmd:'claude-sync init --backend git --remote-url git@github.com:you/claude-data.git',desc:'Auto-commits and pushes .claude/ to a private repo. Version history included. Best balance of features and simplicity.'},
+  {title:'Gitea (Self-hosted) ★',cmd:'claude-sync init --backend gitea --gitea-url https://gitea.yourserver.org --gitea-user yourname',desc:'Your own Gitea instance as sync hub. Auto-creates the repo via API. Works on LAN, VPN, or public domain. No GitHub dependency. Full version history in the Gitea web UI.'},
   {title:'Cloud Storage',cmd:'claude-sync init --backend cloud --cloud-provider icloud',desc:'Syncs via iCloud, Dropbox, or OneDrive. Auto-detects your cloud folder. Zero config after init.'},
   {title:'Syncthing (P2P)',cmd:'claude-sync init --backend syncthing',desc:'Peer-to-peer sync between devices. No cloud, no third party. Maximum privacy. Requires Syncthing installed.'},
   {title:'rsync over SSH',cmd:'claude-sync init --backend rsync --rsync-target me@server:~/.claude-sync-data',desc:'Direct machine-to-machine sync. For users with SSH already configured. Maximum control.'},
@@ -177,49 +238,96 @@ const backends=[
 function showBackend(i){
   const bd=document.getElementById('bd');
   const b=backends[i];
-  document.querySelectorAll('.backend-table tr').forEach((r,j)=>r.classList.toggle('selected',j===i));
+  document.querySelectorAll('.backend-table tbody tr').forEach((r,j)=>r.classList.toggle('selected',j===i));
   bd.classList.add('open');
   bd.innerHTML=`<strong style="color:#3fb950">${b.title}</strong><p style="margin:.5rem 0;color:#8b949e">${b.desc}</p><code>${b.cmd}</code>`;
 }
 
-// Terminal wizard animation
-const lines=[
-  {t:'prompt',text:'$ claude-sync init'},
-  {t:'',text:''},
-  {t:'cyan',text:'  claude-sync v1.0.0'},
-  {t:'',text:''},
-  {t:'dim',text:"  ? What's this device's name?"},
-  {t:'green',text:'    MacBook-Pro'},
-  {t:'',text:''},
-  {t:'dim',text:'  ? How do you want to sync?'},
-  {t:'green',text:'  > Git (recommended)'},
-  {t:'dim',text:'    iCloud / Dropbox / OneDrive'},
-  {t:'dim',text:'    Syncthing (P2P)'},
-  {t:'dim',text:'    rsync over SSH'},
-  {t:'dim',text:'    Custom command'},
-  {t:'',text:''},
-  {t:'dim',text:'  ? Git remote URL:'},
-  {t:'green',text:'    git@github.com:you/claude-sync-data.git'},
-  {t:'',text:''},
-  {t:'green',text:'  Setup complete!'},
-  {t:'dim',text:'  Your .claude/ directory will now sync across all your devices.'},
-  {t:'yellow',text:'  Run "claude-sync status" to verify.'},
+// Terminal sequences — two modes
+const termSequences=[
+  // 0: Standard Git
+  [
+    {t:'prompt',text:'$ claude-sync init'},
+    {t:'',text:''},
+    {t:'cyan',text:'  claude-sync v0.2.0'},
+    {t:'',text:''},
+    {t:'dim',text:"  ? What's this device's name?"},
+    {t:'green',text:'    MacBook-Pro'},
+    {t:'',text:''},
+    {t:'dim',text:'  ? How do you want to sync?'},
+    {t:'green',text:'  > Git (recommended)'},
+    {t:'dim',text:'    Gitea (self-hosted ★)'},
+    {t:'dim',text:'    iCloud / Dropbox / OneDrive'},
+    {t:'dim',text:'    Syncthing (P2P)'},
+    {t:'dim',text:'    rsync over SSH'},
+    {t:'',text:''},
+    {t:'dim',text:'  ? Git remote URL:'},
+    {t:'green',text:'    git@github.com:you/claude-sync-data.git'},
+    {t:'',text:''},
+    {t:'green',text:'  ✓ Setup complete!'},
+    {t:'dim',text:'  Your .claude/ will now sync across all devices.'},
+    {t:'yellow',text:'  Run "claude-sync status" to verify.'},
+  ],
+  // 1: Gitea
+  [
+    {t:'prompt',text:'$ claude-sync init --backend gitea'},
+    {t:'',text:''},
+    {t:'cyan',text:'  claude-sync v0.2.0'},
+    {t:'',text:''},
+    {t:'dim',text:"  ? What's this device's name?"},
+    {t:'green',text:'    Mac-Studio'},
+    {t:'',text:''},
+    {t:'dim',text:'  ? Gitea URL:'},
+    {t:'green',text:'    https://gitea.yourserver.org'},
+    {t:'',text:''},
+    {t:'dim',text:'  ? Gitea username:'},
+    {t:'green',text:'    yourname'},
+    {t:'',text:''},
+    {t:'dim',text:'  ? Gitea access token: '},
+    {t:'green',text:'    ••••••••••••••••••••'},
+    {t:'',text:''},
+    {t:'dim',text:'  ? Repository name:'},
+    {t:'green',text:'    claude-memory'},
+    {t:'',text:''},
+    {t:'dim',text:'  Verifying connection to Gitea...'},
+    {t:'green',text:'  ✓ Connected as @yourname'},
+    {t:'green',text:'  ✓ Repo "claude-memory" created (private)'},
+    {t:'',text:''},
+    {t:'green',text:'  ✓ Setup complete!'},
+    {t:'orange',text:'  Web UI: https://gitea.yourserver.org/yourname/claude-memory'},
+    {t:'dim',text:'  Run "claude-sync sync" to push your context now.'},
+  ]
 ];
-const term=document.getElementById('term');
+
+let currentTab=0;
 let lineIdx=0;
+let animTimer=null;
+const term=document.getElementById('term');
+
+function switchTab(i,el){
+  document.querySelectorAll('.term-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  currentTab=i;
+  if(animTimer) clearTimeout(animTimer);
+  term.innerHTML='';
+  lineIdx=0;
+  addLine();
+}
+
 function addLine(){
+  const lines=termSequences[currentTab];
   if(lineIdx>=lines.length){
-    setTimeout(()=>{term.innerHTML='';lineIdx=0;addLine()},4000);
+    animTimer=setTimeout(()=>{term.innerHTML='';lineIdx=0;addLine()},4500);
     return;
   }
   const l=lines[lineIdx];
   const el=document.createElement('div');el.className='term-line';
   const cls=l.t?` term-${l.t}`:'';
-  el.innerHTML=`<span class="${cls}">${l.text||'&nbsp;'}</span>${lineIdx===lines.length-1?'':''}`;
+  el.innerHTML=`<span class="${cls}">${l.text||'&nbsp;'}</span>`;
   term.appendChild(el);
   term.scrollTop=term.scrollHeight;
   lineIdx++;
-  setTimeout(addLine,lineIdx<=1?400:lineIdx<6?300:150);
+  animTimer=setTimeout(addLine,lineIdx<=1?400:lineIdx<5?280:160);
 }
 addLine();
 </script>
