@@ -1,0 +1,41 @@
+name: security-scan
+
+# Repo-level safeguard: every push and PR is scanned for committed secrets,
+# private IPs and key/.env files. A hit fails the check and blocks the merge.
+# Patterns are generic (API-key/token/private-key formats, RFC1918 ranges) so
+# the workflow itself carries no sensitive data. No untrusted event input is
+# used in run: steps (injection-safe).
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  secret-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Scan for committed secrets
+        run: |
+          PAT='(sk-[A-Za-z0-9]{20,}|ghp_[A-Za-z0-9]{36}|gho_[A-Za-z0-9]{36}|github_pat_[A-Za-z0-9_]{50,}|AKIA[0-9A-Z]{16}|AIza[0-9A-Za-z_-]{35}|xox[baprs]-[A-Za-z0-9-]{10,}|-----BEGIN [A-Z ]*PRIVATE KEY-----|hf_[A-Za-z0-9]{30,}|nvapi-[A-Za-z0-9_-]{20,}|glpat-[A-Za-z0-9_-]{20,})'
+          if grep -rIEn "$PAT" --exclude-dir=.git --exclude-dir=.github . ; then
+            echo "::error::Potential secret/token detected — push blocked."; exit 1
+          fi
+          echo "OK: no secret/token patterns."
+      - name: Scan for private IPs
+        run: |
+          IP='(^|[^0-9.])(10\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}|192\.168\.[0-9]{1,3}\.[0-9]{1,3}|172\.(1[6-9]|2[0-9]|3[01])\.[0-9]{1,3}\.[0-9]{1,3})'
+          if grep -rIEn "$IP" --include='*.py' --include='*.json' --include='*.md' --include='*.yaml' --include='*.yml' --include='*.txt' --include='*.html' --include='*.js' --exclude-dir=.git --exclude-dir=.github . ; then
+            echo "::error::Private (RFC1918) IP detected — push blocked. Use 192.0.2.0/24 in examples."; exit 1
+          fi
+          echo "OK: no private IPs."
+      - name: Scan for secret/key/weight files
+        run: |
+          HITS=$(find . -path ./.git -prune -o -type f \( -name '*.key' -o -name '*.pem' -o -name '.env' -o -name '*.safetensors' -o -name '*.gguf' \) -print | grep -v '.env.example' || true)
+          if [ -n "$HITS" ]; then
+            echo "::error::Secret/key/weight file committed — push blocked:"; echo "$HITS"; exit 1
+          fi
+          echo "OK: no key/.env/weight files."
