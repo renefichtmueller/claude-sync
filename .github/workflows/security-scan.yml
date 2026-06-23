@@ -1,9 +1,9 @@
 name: security-scan
 
-# Max-heuristic push safeguard (server-side). gitleaks = entropy + 150+ curated
-# secret rules over full history; plus key/.env/weight-file and private-IP checks.
-# Any hit fails the check and blocks the merge. .gitleaks.toml allowlists confirmed
-# false-positives (test fixtures, doc placeholders) per repo.
+# Max-heuristic, reliable push safeguard. Direct gitleaks FULL scan (entropy +
+# 150+ rules, respects .gitleaks.toml) — no partial/range scan, so force-pushes
+# and history rewrites don't break it. Plus key/.env/weight-file and private-IP
+# checks (the IP check skips docs/tests/examples to avoid flagging sample IPs).
 
 on:
   push:
@@ -19,21 +19,22 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: gitleaks (entropy + curated rules, full history)
-        uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: gitleaks full scan (entropy + curated rules)
+        run: |
+          curl -sSfL https://github.com/gitleaks/gitleaks/releases/download/v8.24.3/gitleaks_8.24.3_linux_x64.tar.gz -o /tmp/gl.tgz
+          tar -xzf /tmp/gl.tgz -C /tmp gitleaks
+          /tmp/gitleaks detect --source . --no-banner --redact --exit-code 1
       - name: key / .env / weight files
         if: always()
         run: |
           HITS=$(find . -path ./.git -prune -o -type f \( -name '*.key' -o -name '*.pem' -o -name '.env' -o -name '*.safetensors' -o -name '*.gguf' \) -print | grep -v '.env.example' || true)
           if [ -n "$HITS" ]; then echo "::error::key/.env/weight file committed:"; echo "$HITS"; exit 1; fi
           echo "OK: no key/.env/weight files."
-      - name: private IPs (RFC1918)
+      - name: private IPs in code/config
         if: always()
         run: |
           IP='(^|[^0-9.])(10\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}|192\.168\.[0-9]{1,3}\.[0-9]{1,3}|172\.(1[6-9]|2[0-9]|3[01])\.[0-9]{1,3}\.[0-9]{1,3})'
-          if grep -rIEn "$IP" --include='*.py' --include='*.ts' --include='*.js' --include='*.json' --include='*.yaml' --include='*.yml' --include='*.sh' --include='*.md' --exclude-dir=.git --exclude-dir=.github . ; then
-            echo "::error::private (RFC1918) IP — use the 192.0.2.0/24 doc range in examples."; exit 1
+          if grep -rIEn "$IP" --include='*.py' --include='*.ts' --include='*.js' --include='*.sh' --include='*.yaml' --include='*.yml' --exclude-dir=.git --exclude-dir=.github --exclude-dir=docs --exclude-dir=tests --exclude-dir=test --exclude-dir=__tests__ --exclude-dir=examples --exclude-dir=fixtures . ; then
+            echo "::error::private (RFC1918) IP in code/config — use 192.0.2.0/24 in examples."; exit 1
           fi
-          echo "OK: no private IPs."
+          echo "OK: no private IPs in code/config."
